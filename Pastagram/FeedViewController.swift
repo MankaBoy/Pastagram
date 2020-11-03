@@ -55,7 +55,7 @@ class FeedViewController: UIViewController, UITableViewDelegate,UITableViewDataS
         let imageFile = post ["image"] as! PFFileObject
         let urlString = imageFile.url!
         let url = URL(string: urlString)!
-        print(url)
+//        print(url)
         let data = try! Data(contentsOf: url)
 
         cell.photoView.image = UIImage(data: data)
@@ -98,5 +98,23 @@ class FeedViewController: UIViewController, UITableViewDelegate,UITableViewDataS
         sceneDelegate.window?.rootViewController = loginViewController
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = posts[indexPath.row]
+        let comment = PFObject(className: "Comments")
+        comment["text"] = "This is a random comment"
+        comment["post"] = post
+        comment["post"] = PFUser.current()!
+        
+        post.add(comment, forKey: "comments")
+        post.saveInBackground{ (sucess, error) in
+            if sucess {
+                print("comment saved")
+            }
+            else{
+                print("Errpr saving comment")
+            }
+        }
+
+    }
 
 }
