@@ -40,13 +40,22 @@ class FeedViewController: UIViewController, UITableViewDelegate,UITableViewDataS
     // Required funcions for data source
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
+        let post = posts[section]
+        let comments = (post["comments"] as? [PFObject]) ?? []
+        return comments.count + 1 // one for each
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return posts.count
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let post = posts[indexPath.section]
+        let comments = (post["comments"] as? [PFObject]) ?? []
+        
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as! PostCell
         
-        let post = posts[indexPath.row]
         let user = post["author"] as! PFUser
         
         cell.usernameLabel.text = user.username
