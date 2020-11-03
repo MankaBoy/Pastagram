@@ -64,6 +64,9 @@ class FeedViewController: UIViewController, UITableViewDelegate,UITableViewDataS
         
          
     }
+    
+    
+    
 
     /*
     // MARK: - Navigation
@@ -74,5 +77,26 @@ class FeedViewController: UIViewController, UITableViewDelegate,UITableViewDataS
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
+    @IBAction func onLogoutButton(_ sender: Any) {
+        PFUser.logOut()
+        let main = UIStoryboard(name: "Main", bundle: nil)
+        let loginViewController = main.instantiateViewController(withIdentifier: "LoginViewController")
+        
+        
+        
+        // This will not work because apple has moved to scenedelegate
+//       let delegate =  UIApplication.shared.delegate as! SceneDelegate
+//        delegate.window?.rootViewController = loginViewController
+        
+        
+    
+
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
+        
+        sceneDelegate.window?.rootViewController = loginViewController
+    }
+    
 
 }
